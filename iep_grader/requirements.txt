@@ -1,0 +1,12 @@
+requests==2.31.0
+pyjwt==2.7.0
+python-dateutil==2.8.2
+web3==6.5.0
+# web3==6.5.0 bundles a pytest11 plugin (web3.tools.pytest_ethereum) that imports
+# eth_typing.ContractName, which was removed in eth-typing 5.0.0. Pin below that
+# so a plain `pip install` doesn't leave pytest unable to start.
+eth-typing<5
+# web3==6.5.0 does `import pkg_resources` at import time, but Python 3.12+ venvs
+# no longer ship setuptools by default, so web3 (and therefore pytest collection)
+# fails with ModuleNotFoundError. Cap below 81, where pkg_resources is removed.
+setuptools<81
