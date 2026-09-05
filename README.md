@@ -58,12 +58,7 @@ iep-investment-fund/
 │   └── 08-director.yaml
 │
 ├── scripts/
-│   ├── compile-contract.sh    # kompajliranje ugovora u Voting.json
-│   ├── build-images.sh        # izgradnja Docker Image artefakata
-│   ├── deploy.sh              # kubectl apply + cekanje
-│   ├── teardown.sh            # uklanjanje sistema
-│   ├── vote.py                # slanje glasa nad pametnim ugovorom
-│   └── demo.sh                # demonstracija rada celog sistema
+│   └── vote.py                # slanje glasa nad pametnim ugovorom
 │
 ├── docker-compose.yml         # pomocna konfiguracija za lokalni razvoj
 └── README.md
@@ -99,24 +94,11 @@ winget install -e --id Python.Python.3.11
 > U Docker Desktop podesavanjima (*Settings → Kubernetes*) moguce je ukljuciti
 > ugradjeni Kubernetes klaster i tada minikube nije potreban.
 
-> **Pokretanje skripti iz `scripts/`.** Za svaku `.sh` skriptu postoji i
-> `.ps1` ekvivalent (`build-images.ps1`, `deploy.ps1`, `teardown.ps1`,
-> `demo.ps1`, `compile-contract.ps1`) koji radi nativno u PowerShell-u, bez
-> WSL-a ili Git Bash-a:
->
-> ```powershell
-> .\scripts\build-images.ps1
-> kubectl apply -f kubernetes\
-> .\scripts\demo.ps1
-> ```
->
-> `demo.ps1` zahteva da naredba `python` bude na `PATH`-u (proverava se sa
-> `python --version`); ostatak zavisnosti je isti kao u sekciji 2.5. Ako se
-> ipak koristi bash verzija skripti, potrebna je WSL2 (Docker Desktop je vec
-> zahteva) ili **Git Bash** (dolazi uz [Git for Windows](https://git-scm.com/download/win)).
-> Arhitektura racunara nije prepreka ni u jednom slucaju — svi Docker Image
-> artefakti i pametni ugovor se grade i pokrecu identicno na `amd64` (vecina
-> Windows racunara) kao i na Linux-u.
+> Sve komande za izgradnju i pokretanje sistema navedene su u sekciji 3 i
+> izvrsavaju se direktno (`docker` i `kubectl`), bez pomocnih skripti.
+> Arhitektura racunara nije prepreka — svi Docker Image artefakti i pametni
+> ugovor se grade i pokrecu identicno na `amd64` (vecina Windows racunara)
+> kao i na Linux-u.
 
 ### 2.3 Instalacija — Linux (Debian / Ubuntu)
 
@@ -168,61 +150,93 @@ Preuzimaju se automatski prilikom pokretanja sistema:
 
 ## 3. Pokretanje sistema pomocu Kubernetes alata
 
-```bash
-# 1) pokretanje lokalnog klastera
-minikube start --driver=docker --cpus=4 --memory=6144
+Sistem se pokrece na ugradjenom Kubernetes klasteru Docker Desktop-a
+(*Settings → Kubernetes → Enable Kubernetes*):
 
-# 2) izgradnja image-a unutar Docker okruzenja klastera
-#    (bez ovoga klaster ne moze da pronadje lokalno izgradjene image-e)
-eval $(minikube docker-env)          # PowerShell: & minikube -p minikube docker-env | Invoke-Expression
-./scripts/build-images.sh
+```powershell
+# 1) provera da je klaster spreman (status mora biti "Ready")
+kubectl get nodes
+
+# 2) izgradnja Docker Image artefakata
+docker build -t iep/authentication:v1 .\authentication
+docker build -t iep/employee:v1 .\employee
+docker build -t iep/director:v1 .\director
 
 # 3) pokretanje sistema
-kubectl apply -f kubernetes/
+kubectl apply -f kubernetes\
 
-# 4) provera stanja
+# 4) prebacivanje servisa na izgradjene oznake
+kubectl set image deployment/authentication authentication=iep/authentication:v1
+kubectl set image deployment/employee employee=iep/employee:v1
+kubectl set image deployment/director director=iep/director:v1
+
+# 5) provera stanja (sve treba da bude 1/1 Running)
 kubectl get pods
 kubectl get svc
 ```
 
-Ako se koristi **kind** umesto minikube-a, umesto `eval $(minikube docker-env)`
-koristi se ucitavanje image-a u klaster:
+> **Zasto korak 4.** Kubernetes klaster ima sopstveno skladiste image-a
+> (`containerd`), odvojeno od Docker-ovog. Uz oznaku `latest` i
+> `imagePullPolicy: IfNotPresent`, klaster zadrzi ranije kesiranu kopiju i ne
+> primeti novu izgradnju — servis tada radi sa starim kodom. Zato se svaka
+> izgradnja oznacava novom oznakom (`v1`, `v2`, ...) i servisi se eksplicitno
+> prebacuju na nju. Sve je lokalno — pristup internetu nije potreban.
 
-```bash
-./scripts/build-images.sh
-kind load docker-image iep/authentication:latest iep/employee:latest iep/director:latest
+### 3.0 Izmena servisa nakon pokretanja
+
+Posle izmene koda dovoljno je ponovo izgraditi **samo taj servis**, uz **novu**
+oznaku, i prebaciti deployment na nju:
+
+```powershell
+docker build -t iep/employee:v2 .\employee
+kubectl set image deployment/employee employee=iep/employee:v2
+kubectl rollout status deployment/employee
+
+# provera da pod stvarno ima novi kod
+kubectl exec deploy/employee -- grep -n "<nesto iz izmene>" /app/employee.py
 ```
 
-Ako se koristi **Docker Desktop Kubernetes**, dovoljno je pokrenuti
-`./scripts/build-images.sh` (image-i su vec vidljivi klasteru).
+Ovo radi i bez pristupa internetu: Docker kesira sloj sa `pip install`, pa se
+zavisnosti ne preuzimaju ponovo sve dok se `requirements.txt` ne menja.
 
 ### 3.1 Adrese servisa
 
 Servisi su izlozeni preko `NodePort` tipa:
 
-| Servis | NodePort | Adresa (minikube) |
-|--------|----------|-------------------|
-| authentication | 30001 | `minikube service authentication --url` |
-| employee | 30002 | `minikube service employee --url` |
-| director | 30003 | `minikube service director --url` |
-| ganache (RPC) | 30004 | `minikube service ganache --url` |
+| Servis | NodePort | Adresa |
+|--------|----------|--------|
+| authentication | 30001 | `http://localhost:30001` |
+| employee | 30002 | `http://localhost:30002` |
+| director | 30003 | `http://localhost:30003` |
+| ganache (RPC) | 30004 | `http://localhost:30004` |
 
-Na Docker Desktop-u i kind-u servisi su dostupni na `http://localhost:3000X`.
+Novije verzije Docker Desktop-a **ne prosledjuju** `NodePort` na `localhost`
+automatski. Provera:
 
-Alternativa koja uvek radi (prosledjivanje porta):
-
-```bash
-kubectl port-forward svc/authentication 30001:5000 &
-kubectl port-forward svc/employee       30002:5000 &
-kubectl port-forward svc/director       30003:5000 &
-kubectl port-forward svc/ganache        30004:8545 &
+```powershell
+curl http://localhost:30001/health
 ```
+
+Ako odgovor izostane (`Connection refused`), otvaraju se tuneli — svaka
+naredba u **zasebnom** prozoru, koji ostaje otvoren:
+
+```powershell
+kubectl port-forward svc/authentication 30001:5000
+kubectl port-forward svc/employee 30002:5000
+kubectl port-forward svc/director 30003:5000
+kubectl port-forward svc/ganache 30004:8545
+```
+
+> Tunel se prekida kada se pod restartuje (npr. posle `kubectl set image`), pa
+> ga tada treba pokrenuti ponovo.
 
 ### 3.2 Zaustavljanje
 
-```bash
-./scripts/teardown.sh            # uklanja sve osim trajnih podataka
-./scripts/teardown.sh --purge    # uklanja i trajne podatke iz baza
+```powershell
+kubectl delete -f kubernetes\
+
+# uklanjanje i trajnih podataka iz baza:
+kubectl delete pvc authentication-db-data fund-db-data order-cache-data
 ```
 
 ---
@@ -391,12 +405,23 @@ python scripts/vote.py send --url http://localhost:30004 --account 3 --file tx.j
 
 ### Kompletna demonstracija
 
-```bash
-./scripts/demo.sh
+Ceo tok (registracija → prijava → predlog kupovine → pregled zahteva →
+kreiranje ugovora → glasanje → pretraga → izvestaj) pokriven je automatskim
+testovima iz direktorijuma `iep_grader`:
+
+```powershell
+cd iep_grader
+pytest -q --type all `
+  --authentication-url http://localhost:30001 `
+  --employee-url http://localhost:30002 `
+  --director-url http://localhost:30003 `
+  --provider-url http://localhost:30004 `
+  --jwt-secret 5f2b8c1a4d7e9f0b3c6a8d1e4f7b2c5a8d1e4f7b2c5a8d1e `
+  --roles-field role --employee-role employee --director-role director `
+  --with-authentication --with-blockchain --wait-for-services
 ```
 
-Skript prolazi kroz ceo tok: registracija → prijava → predlog kupovine →
-pregled zahteva → kreiranje ugovora → glasanje → pretraga → izvestaj.
+Pojedinacni koraci mogu se izvrsiti i rucno, `curl` naredbama iz sekcije 7.
 
 ---
 
@@ -449,7 +474,7 @@ Polja `selling_price` i `selling_date` postoje samo kod prodate imovine.
   u odgovorima se formatiraju u ISO 8601 obliku sa milisekundama i `Z` sufiksom.
 - **Konfiguracija.** Nijedna adresa, lozinka ni naziv baze nije upisan u kod —
   sve dolazi iz `ConfigMap` i `Secret` objekata putem varijabli okruzenja.
-- **Pametni ugovor** se kompajlira unapred, skriptom `scripts/compile-contract.sh`
+- **Pametni ugovor** je kompajliran unapred, jednokratno
   (`solc 0.8.19`, ciljni EVM `byzantium` zbog kompatibilnosti sa `ganache-cli`).
   Rezultat su ABI i EVM bytecode, sto ne zavisi od arhitekture racunara, pa
   Docker Image samo preuzima gotov artefakt `director/contracts/Voting.json`.
@@ -468,8 +493,9 @@ Polja `selling_price` i `selling_date` postoje samo kod prodate imovine.
 
 | Problem | Resenje |
 |---------|---------|
-| `ImagePullBackOff` za `iep/*` | image-i nisu izgradjeni u okruzenju klastera — pokrenuti `eval $(minikube docker-env)` pa `./scripts/build-images.sh` |
-| `GRESKA: contracts/Voting.json ne postoji` | artefakt ugovora nije kompajliran — pokrenuti `./scripts/compile-contract.sh` |
+| `ImagePullBackOff` za `iep/*` | image sa tom oznakom ne postoji — proveriti `docker images` i ponoviti `docker build` pa `kubectl set image` |
+| Servis radi sa starim kodom nakon izmene | klaster koristi kesirani image — izgraditi sa **novom** oznakom (`v2`, `v3`, ...) i pokrenuti `kubectl set image` |
+| `contracts/Voting.json ne postoji` | artefakt ugovora nedostaje — vratiti ga iz sistema za verzionisanje (`git checkout director/contracts/Voting.json`) |
 | Pod `authentication` u stanju `Init:0/1` | ceka MySQL; pratiti `kubectl logs deploy/authentication -c migrate` |
 | `Missing Authorization Header` | nije poslato zaglavlje `Authorization: Bearer <token>` |
 | `403 Forbidden.` | koriscen je token pogresne uloge (npr. token zaposlenog na servisu direktora) |
