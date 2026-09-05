@@ -21,5 +21,24 @@ docker build -t iep/employee:latest "${ROOT}/employee"
 echo "==> Gradim iep/director:latest"
 docker build -t iep/director:latest "${ROOT}/director"
 
-echo "==> Gotovo."
+# ---------------------------------------------------------------------------
+# Jedinstvena oznaka za ovu izgradnju.
+#
+# Kubernetes klaster (containerd) ima sopstveno skladiste image-a, odvojeno od
+# Docker-ovog. Uz oznaku "latest" i imagePullPolicy: IfNotPresent, klaster
+# zadrzi vec kesiranu kopiju i ne primeti novu izgradnju. Zbog toga se svaka
+# izgradnja dodatno oznacava jedinstvenom oznakom, koju skript deploy.sh
+# koristi da bi klaster sigurno preuzeo bas ovu verziju.
+#
+# Oznaka je lokalna - ne zahteva pristup internetu ni registry.
+# ---------------------------------------------------------------------------
+BUILD_TAG="build-$(date +%Y%m%d-%H%M%S)"
+
+for service in authentication employee director; do
+  docker tag "iep/${service}:latest" "iep/${service}:${BUILD_TAG}"
+done
+
+echo "${BUILD_TAG}" > "${ROOT}/.image-tag"
+
+echo "==> Gotovo. Oznaka izgradnje: ${BUILD_TAG}"
 docker images | grep '^iep/' || true
