@@ -765,7 +765,7 @@
       "received_status_code": 200,
       "expected_response": {},
       "received_response": {
-        "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4ODYyMzY3NCwianRpIjoiN2YyZmNhMmEtNjVmZi00ZDk4LWFlODQtODAzMWRhYTgzNDRlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im9ubHltb25leUBnbWFpbC5jb20iLCJuYmYiOjE3ODg2MjM2NzQsImNzcmYiOiJlMjUyZDRiYy1kYTYyLTQ4YWEtOGIzMC01NDY4NzI2ZDNiZjQiLCJleHAiOjE3ODg2MjcyNzQsImZvcmVuYW1lIjoiU2Nyb29nZSIsInN1cm5hbWUiOiJNY0R1Y2siLCJlbWFpbCI6Im9ubHltb25leUBnbWFpbC5jb20iLCJyb2xlIjoiZGlyZWN0b3IifQ.O3As5y6B4IjnZzfAuUY8JCgTuDauZ714VrX0UrOez20"
+        "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4ODYzOTUwMCwianRpIjoiNzBkNDIyYjgtMmI1Yi00NDY0LTljMjItMGZjOThmNTBmZGUyIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Im9ubHltb25leUBnbWFpbC5jb20iLCJuYmYiOjE3ODg2Mzk1MDAsImNzcmYiOiIxZDRlOGY2Ni1jMDQyLTQwM2QtOWQ3OS01YWU3YTIzNjY5YzUiLCJleHAiOjE3ODg2NDMxMDAsImZvcmVuYW1lIjoiU2Nyb29nZSIsInN1cm5hbWUiOiJNY0R1Y2siLCJlbWFpbCI6Im9ubHltb25leUBnbWFpbC5jb20iLCJyb2xlIjoiZGlyZWN0b3IifQ.EnW454KVa_p4zS2FdS4cfAilInxZt4mSpsHlw184FZM"
       },
       "weight": 3.0,
       "score_multiplier": 1.0,
@@ -787,7 +787,7 @@
       "received_status_code": 200,
       "expected_response": {},
       "received_response": {
-        "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4ODYyMzY3NCwianRpIjoiNzExMDE0MWEtYTYwNC00YTJkLTk3MjAtNDg4NjdiMzVjZjhmIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImpvaG5AZ21haWwuY29tIiwibmJmIjoxNzg4NjIzNjc0LCJjc3JmIjoiNWMyOWJjYjktZjI4Ni00NTQzLWIyNzgtOGU1YTQ4MWExMWQzIiwiZXhwIjoxNzg4NjI3Mjc0LCJmb3JlbmFtZSI6IkpvaG4iLCJzdXJuYW1lIjoiRG9lIiwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSIsInJvbGUiOiJlbXBsb3llZSJ9.0_jFhVZQ90MqFlKBRIcZcW_kXTX6j7Pa5SSUYVGzvGo"
+        "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc4ODYzOTUwMCwianRpIjoiZThkNzllMDItMWZkNC00NDQ2LTkyYTItMGQxODFkYWE0OGMwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImpvaG5AZ21haWwuY29tIiwibmJmIjoxNzg4NjM5NTAwLCJjc3JmIjoiNGRkNDI1MTctYmZiNi00OGViLWFlNmQtZTA2ZjM0N2I4NDg0IiwiZXhwIjoxNzg4NjQzMTAwLCJmb3JlbmFtZSI6IkpvaG4iLCJzdXJuYW1lIjoiRG9lIiwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSIsInJvbGUiOiJlbXBsb3llZSJ9.bqznJpNp2Sa_BwyXvrFuIOuHL_U1kyy1QH9Q3yfoTPc"
       },
       "weight": 7.0,
       "score_multiplier": 1.0,
@@ -1443,7 +1443,7 @@
       "received_response": {
         "orders": [
           {
-            "uuid": "f23cc828-16fd-4324-8110-05e0b0b6507c",
+            "uuid": "b7e2b6d8-5b78-4314-a04c-6bfb01b19785",
             "order_type": "BUY",
             "name": "AssetBeta",
             "categories": [
@@ -1456,7 +1456,7 @@
             "buying_price": 120000
           },
           {
-            "uuid": "132d65ba-839f-4ec6-877c-302348d834f8",
+            "uuid": "8cb07aeb-6919-4f98-a520-71a3296c950e",
             "order_type": "BUY",
             "name": "AssetAlpha",
             "categories": [
@@ -1470,7 +1470,7 @@
             "buying_price": 50000
           },
           {
-            "uuid": "becaa4d7-6dc8-4516-ada1-dd069dab8930",
+            "uuid": "a402e565-ad74-4ccf-a5f2-002e33fa4309",
             "order_type": "BUY",
             "name": "AssetZeta",
             "categories": [
@@ -1697,7 +1697,7 @@
       "expected_response": {},
       "received_response": {
         "approve_transaction": {
-          "to": "0xb09bCc172050fBd4562da8b229Cf3E45Dc3045A6",
+          "to": "0x2612Af3A521c2df9EAF28422Ca335b04AdF3ac66",
           "data": "0x4b9f5c980000000000000000000000000000000000000000000000000000000000000001",
           "value": 0,
           "gas": 200000,
@@ -1705,7 +1705,7 @@
           "chainId": 1337
         },
         "reject_transaction": {
-          "to": "0xb09bCc172050fBd4562da8b229Cf3E45Dc3045A6",
+          "to": "0x2612Af3A521c2df9EAF28422Ca335b04AdF3ac66",
           "data": "0x4b9f5c980000000000000000000000000000000000000000000000000000000000000000",
           "value": 0,
           "gas": 200000,
@@ -1806,7 +1806,7 @@
       "expected_response": {},
       "received_response": {
         "approve_transaction": {
-          "to": "0xFC628dd79137395F3C9744e33b1c5DE554D94882",
+          "to": "0xA57B8a5584442B467b4689F1144D269d096A3daF",
           "data": "0x4b9f5c980000000000000000000000000000000000000000000000000000000000000001",
           "value": 0,
           "gas": 200000,
@@ -1814,7 +1814,7 @@
           "chainId": 1337
         },
         "reject_transaction": {
-          "to": "0xFC628dd79137395F3C9744e33b1c5DE554D94882",
+          "to": "0xA57B8a5584442B467b4689F1144D269d096A3daF",
           "data": "0x4b9f5c980000000000000000000000000000000000000000000000000000000000000000",
           "value": 0,
           "gas": 200000,
@@ -1844,13 +1844,13 @@
       "received_response": {
         "assets": [
           {
-            "id": "6a9c3b448ad60556cbbf376a",
+            "id": "6a9c7915f17987add210aaee",
             "name": "AssetAlpha",
             "categories": [
               "Technology",
               "Finance"
             ],
-            "buying_date": "2026-09-05T15:54:44.147Z",
+            "buying_date": "2026-09-05T20:18:29.842Z",
             "buying_price": 50000,
             "info": {
               "region": "EU",
@@ -1948,7 +1948,7 @@
       "expected_response": {},
       "received_response": {
         "approve_transaction": {
-          "to": "0x5f8e26fAcC23FA4cbd87b8d9Dbbd33D5047abDE1",
+          "to": "0x26b4AFb60d6C903165150C6F0AA14F8016bE4aec",
           "data": "0x4b9f5c980000000000000000000000000000000000000000000000000000000000000001",
           "value": 0,
           "gas": 200000,
@@ -1956,7 +1956,7 @@
           "chainId": 1337
         },
         "reject_transaction": {
-          "to": "0x5f8e26fAcC23FA4cbd87b8d9Dbbd33D5047abDE1",
+          "to": "0x26b4AFb60d6C903165150C6F0AA14F8016bE4aec",
           "data": "0x4b9f5c980000000000000000000000000000000000000000000000000000000000000000",
           "value": 0,
           "gas": 200000,
@@ -1986,19 +1986,19 @@
       "received_response": {
         "assets": [
           {
-            "id": "6a9c3b448ad60556cbbf376a",
+            "id": "6a9c7915f17987add210aaee",
             "name": "AssetAlpha",
             "categories": [
               "Technology",
               "Finance"
             ],
-            "buying_date": "2026-09-05T15:54:44.147Z",
+            "buying_date": "2026-09-05T20:18:29.842Z",
             "buying_price": 50000,
             "info": {
               "region": "EU",
               "risk_level": "high"
             },
-            "selling_date": "2026-09-05T15:54:49.434Z",
+            "selling_date": "2026-09-05T20:18:34.408Z",
             "selling_price": 75000
           }
         ]
@@ -2090,7 +2090,7 @@
       "expected_response": {},
       "received_response": {
         "approve_transaction": {
-          "to": "0x21a59654176f2689d12E828B77a783072CD26680",
+          "to": "0x630589690929E9cdEFDeF0734717a9eF3Ec7Fcfe",
           "data": "0x4b9f5c980000000000000000000000000000000000000000000000000000000000000001",
           "value": 0,
           "gas": 200000,
@@ -2098,7 +2098,7 @@
           "chainId": 1337
         },
         "reject_transaction": {
-          "to": "0x21a59654176f2689d12E828B77a783072CD26680",
+          "to": "0x630589690929E9cdEFDeF0734717a9eF3Ec7Fcfe",
           "data": "0x4b9f5c980000000000000000000000000000000000000000000000000000000000000000",
           "value": 0,
           "gas": 200000,
@@ -2128,19 +2128,19 @@
       "received_response": {
         "assets": [
           {
-            "id": "6a9c3b448ad60556cbbf376a",
+            "id": "6a9c7915f17987add210aaee",
             "name": "AssetAlpha",
             "categories": [
               "Technology",
               "Finance"
             ],
-            "buying_date": "2026-09-05T15:54:44.147Z",
+            "buying_date": "2026-09-05T20:18:29.842Z",
             "buying_price": 50000,
             "info": {
               "region": "EU",
               "risk_level": "high"
             },
-            "selling_date": "2026-09-05T15:54:49.434Z",
+            "selling_date": "2026-09-05T20:18:34.408Z",
             "selling_price": 75000
           }
         ]
@@ -2186,7 +2186,7 @@
       "expected_response": {},
       "received_response": {
         "approve_transaction": {
-          "to": "0xD86C8F0327494034F60e25074420BcCF560D5610",
+          "to": "0x0E696947A06550DEf604e82C26fd9E493e576337",
           "data": "0x4b9f5c980000000000000000000000000000000000000000000000000000000000000001",
           "value": 0,
           "gas": 200000,
@@ -2194,7 +2194,7 @@
           "chainId": 1337
         },
         "reject_transaction": {
-          "to": "0xD86C8F0327494034F60e25074420BcCF560D5610",
+          "to": "0x0E696947A06550DEf604e82C26fd9E493e576337",
           "data": "0x4b9f5c980000000000000000000000000000000000000000000000000000000000000000",
           "value": 0,
           "gas": 200000,
@@ -2224,13 +2224,13 @@
       "received_response": {
         "assets": [
           {
-            "id": "6a9c3b5a8ad60556cbbf376b",
+            "id": "6a9c792bf17987add210aaef",
             "name": "AssetDelta",
             "categories": [
               "Finance",
               "Real Estate"
             ],
-            "buying_date": "2026-09-05T15:55:06.230Z",
+            "buying_date": "2026-09-05T20:18:51.411Z",
             "buying_price": 200000,
             "info": {
               "sector": "commercial",
@@ -2261,13 +2261,13 @@
       "received_response": {
         "assets": [
           {
-            "id": "6a9c3b5a8ad60556cbbf376b",
+            "id": "6a9c792bf17987add210aaef",
             "name": "AssetDelta",
             "categories": [
               "Finance",
               "Real Estate"
             ],
-            "buying_date": "2026-09-05T15:55:06.230Z",
+            "buying_date": "2026-09-05T20:18:51.411Z",
             "buying_price": 200000,
             "info": {
               "sector": "commercial",
@@ -2298,29 +2298,29 @@
       "received_response": {
         "assets": [
           {
-            "id": "6a9c3b448ad60556cbbf376a",
+            "id": "6a9c7915f17987add210aaee",
             "name": "AssetAlpha",
             "categories": [
               "Technology",
               "Finance"
             ],
-            "buying_date": "2026-09-05T15:54:44.147Z",
+            "buying_date": "2026-09-05T20:18:29.842Z",
             "buying_price": 50000,
             "info": {
               "region": "EU",
               "risk_level": "high"
             },
-            "selling_date": "2026-09-05T15:54:49.434Z",
+            "selling_date": "2026-09-05T20:18:34.408Z",
             "selling_price": 75000
           },
           {
-            "id": "6a9c3b5a8ad60556cbbf376b",
+            "id": "6a9c792bf17987add210aaef",
             "name": "AssetDelta",
             "categories": [
               "Finance",
               "Real Estate"
             ],
-            "buying_date": "2026-09-05T15:55:06.230Z",
+            "buying_date": "2026-09-05T20:18:51.411Z",
             "buying_price": 200000,
             "info": {
               "sector": "commercial",
@@ -2351,19 +2351,19 @@
       "received_response": {
         "assets": [
           {
-            "id": "6a9c3b448ad60556cbbf376a",
+            "id": "6a9c7915f17987add210aaee",
             "name": "AssetAlpha",
             "categories": [
               "Technology",
               "Finance"
             ],
-            "buying_date": "2026-09-05T15:54:44.147Z",
+            "buying_date": "2026-09-05T20:18:29.842Z",
             "buying_price": 50000,
             "info": {
               "region": "EU",
               "risk_level": "high"
             },
-            "selling_date": "2026-09-05T15:54:49.434Z",
+            "selling_date": "2026-09-05T20:18:34.408Z",
             "selling_price": 75000
           }
         ]
@@ -2390,13 +2390,13 @@
       "received_response": {
         "assets": [
           {
-            "id": "6a9c3b5a8ad60556cbbf376b",
+            "id": "6a9c792bf17987add210aaef",
             "name": "AssetDelta",
             "categories": [
               "Finance",
               "Real Estate"
             ],
-            "buying_date": "2026-09-05T15:55:06.230Z",
+            "buying_date": "2026-09-05T20:18:51.411Z",
             "buying_price": 200000,
             "info": {
               "sector": "commercial",
@@ -2502,7 +2502,7 @@
       "expected_response": {},
       "received_response": {
         "approve_transaction": {
-          "to": "0x4bf749ec68270027C5910220CEAB30Cc284c7BA2",
+          "to": "0xDb56f2e9369E0D7bD191099125a3f6C370F8ed15",
           "data": "0x4b9f5c980000000000000000000000000000000000000000000000000000000000000001",
           "value": 0,
           "gas": 200000,
@@ -2510,7 +2510,7 @@
           "chainId": 1337
         },
         "reject_transaction": {
-          "to": "0x4bf749ec68270027C5910220CEAB30Cc284c7BA2",
+          "to": "0xDb56f2e9369E0D7bD191099125a3f6C370F8ed15",
           "data": "0x4b9f5c980000000000000000000000000000000000000000000000000000000000000000",
           "value": 0,
           "gas": 200000,
@@ -2540,29 +2540,29 @@
       "received_response": {
         "assets": [
           {
-            "id": "6a9c3b448ad60556cbbf376a",
+            "id": "6a9c7915f17987add210aaee",
             "name": "AssetAlpha",
             "categories": [
               "Technology",
               "Finance"
             ],
-            "buying_date": "2026-09-05T15:54:44.147Z",
+            "buying_date": "2026-09-05T20:18:29.842Z",
             "buying_price": 50000,
             "info": {
               "region": "EU",
               "risk_level": "high"
             },
-            "selling_date": "2026-09-05T15:54:49.434Z",
+            "selling_date": "2026-09-05T20:18:34.408Z",
             "selling_price": 75000
           },
           {
-            "id": "6a9c3b5a8ad60556cbbf376b",
+            "id": "6a9c792bf17987add210aaef",
             "name": "AssetDelta",
             "categories": [
               "Finance",
               "Real Estate"
             ],
-            "buying_date": "2026-09-05T15:55:06.230Z",
+            "buying_date": "2026-09-05T20:18:51.411Z",
             "buying_price": 200000,
             "info": {
               "sector": "commercial",
@@ -2570,13 +2570,13 @@
             }
           },
           {
-            "id": "6a9c3b5e8ad60556cbbf376c",
+            "id": "6a9c792ff17987add210aaf0",
             "name": "AssetEpsilon",
             "categories": [
               "Energy",
               "Technology"
             ],
-            "buying_date": "2026-09-05T15:55:10.748Z",
+            "buying_date": "2026-09-05T20:18:55.827Z",
             "buying_price": 95000,
             "info": {
               "geo": {
@@ -2613,13 +2613,13 @@
       "received_response": {
         "assets": [
           {
-            "id": "6a9c3b5e8ad60556cbbf376c",
+            "id": "6a9c792ff17987add210aaf0",
             "name": "AssetEpsilon",
             "categories": [
               "Energy",
               "Technology"
             ],
-            "buying_date": "2026-09-05T15:55:10.748Z",
+            "buying_date": "2026-09-05T20:18:55.827Z",
             "buying_price": 95000,
             "info": {
               "geo": {
@@ -2656,13 +2656,13 @@
       "received_response": {
         "assets": [
           {
-            "id": "6a9c3b5e8ad60556cbbf376c",
+            "id": "6a9c792ff17987add210aaf0",
             "name": "AssetEpsilon",
             "categories": [
               "Energy",
               "Technology"
             ],
-            "buying_date": "2026-09-05T15:55:10.748Z",
+            "buying_date": "2026-09-05T20:18:55.827Z",
             "buying_price": 95000,
             "info": {
               "geo": {
@@ -2699,13 +2699,13 @@
       "received_response": {
         "assets": [
           {
-            "id": "6a9c3b5e8ad60556cbbf376c",
+            "id": "6a9c792ff17987add210aaf0",
             "name": "AssetEpsilon",
             "categories": [
               "Energy",
               "Technology"
             ],
-            "buying_date": "2026-09-05T15:55:10.748Z",
+            "buying_date": "2026-09-05T20:18:55.827Z",
             "buying_price": 95000,
             "info": {
               "geo": {
