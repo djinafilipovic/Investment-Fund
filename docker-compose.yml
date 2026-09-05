@@ -56,8 +56,7 @@ services:
       DIRECTOR_EMAIL: onlymoney@gmail.com
       DIRECTOR_PASSWORD: evenmoremoney
     command: >
-      sh -c "python migrate.py &&
-             gunicorn --bind 0.0.0.0:5000 --workers 2 --threads 4 --access-logfile - authentication:application"
+      sh -c "python migrate.py && python authentication.py"
     ports:
       - "5001:5000"
 

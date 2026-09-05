@@ -57,8 +57,6 @@ iep-investment-fund/
 │   ├── 07-employee.yaml            # 3 replike
 │   └── 08-director.yaml
 │
-├── scripts/
-│   └── vote.py                # slanje glasa nad pametnim ugovorom
 │
 ├── docker-compose.yml         # pomocna konfiguracija za lokalni razvoj
 └── README.md
@@ -126,14 +124,14 @@ brew install --cask docker
 brew install kubectl minikube python@3.11
 ```
 
-### 2.5 Python zavisnosti za pomocne skriptove
+### 2.5 Python zavisnosti za automatske testove
 
-Skript `scripts/vote.py` se izvrsava na racunaru (van kontejnera):
+Testovi iz direktorijuma `iep_grader` se izvrsavaju na racunaru (van kontejnera):
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate          # Windows: .venv\Scripts\activate
-pip install web3==6.20.3
+```powershell
+cd iep_grader
+pip install -r requirements.txt
+pip install -r requirements-pytest.txt
 ```
 
 ### 2.6 Docker Image artefakti koji se preuzimaju sa Docker Hub-a
@@ -372,21 +370,11 @@ curl "$DIRECTOR/report" -H "Authorization: Bearer $DTOKEN"
 }
 ```
 
-4. Zaposleni glasa slanjem jedne od transakcija sa svog racuna:
-
-```bash
-# spisak racuna simulatora
-python scripts/vote.py accounts --url http://localhost:30004
-
-# glasanje racunom sa indeksom 1 (glas ZA)
-curl -s -X POST "$DIRECTOR/decision" -H "Authorization: Bearer $DTOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"uuid":"...","voters":["0x...","0x...","0x..."]}' > tx.json
-
-python scripts/vote.py send --url http://localhost:30004 --account 1 --file tx.json
-python scripts/vote.py send --url http://localhost:30004 --account 2 --file tx.json          # glas ZA
-python scripts/vote.py send --url http://localhost:30004 --account 3 --file tx.json --reject # glas PROTIV
-```
+4. Zaposleni glasa slanjem jedne od tih transakcija sa svog Ethereum racuna
+   (racuna iz liste `voters`). Transakciju potpisuje privatnim kljucem tog
+   racuna i salje je simulatoru na `http://localhost:30004`. Automatski testovi
+   iz `iep_grader` rade tacno to — kreiraju tri racuna, potpisu i posalju
+   glasove.
 
 5. Nadzorna nit u servisu direktora periodicno proverava stanje svakog aktivnog
    ugovora. Kada broj glasova dostigne vecinu (`n / 2 + 1`):
@@ -481,9 +469,12 @@ Polja `selling_price` i `selling_date` postoje samo kod prodate imovine.
   Zahvaljujuci tome za izgradnju image-a nije potreban ni kompajler ni pristup
   internetu. Samo kompajliranje se izvrsava u jednokratnom `linux/amd64`
   kontejneru, jer Solidity tim ne objavljuje `solc 0.8.19` za `linux/arm64`.
-- **Servis direktora radi u jednoj replici sa jednim gunicorn radnikom**, kako bi
-  postojala tacno jedna nadzorna nit. Dodatno, obrada zahteva je zasticena
-  `SET NX` zakljucavanjem u Redis servisu, pa je bezbedna i pri vecem broju replika.
+- **Servisi se pokrecu direktno Flask-om** (`python <servis>.py`), sa iskljucenim
+  `debug` rezimom — ukljucen `debug` pokrece auto-reloader, koji bi u kontejneru
+  napravio drugi proces (kod servisa direktora time i drugu nadzornu nit).
+- **Servis direktora radi u jednoj replici**, kako bi postojala tacno jedna
+  nadzorna nit. Dodatno, obrada zahteva je zasticena `SET NX` zakljucavanjem u
+  Redis servisu, pa je bezbedna i pri vecem broju replika.
 - **Servis za zaposlene radi u tri replike** i ne cuva stanje u memoriji, pa se
   zahtevi mogu obradjivati paralelno.
 
