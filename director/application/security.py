@@ -10,6 +10,10 @@ def role_required(role):
 
     Ako zaglavlje Authorization nije prisutno, flask-jwt-extended vraca
     401 i telo {"msg": "Missing Authorization Header"}, kako je i trazeno.
+
+    Token pogresne uloge (npr. token zaposlenog na servisu direktora)
+    tretira se isto kao izostanak zaglavlja - odgovor je 401 sa istom
+    porukom, jer takav token ne predstavlja validan pristup ovom servisu.
     """
 
     def decorator(function):
@@ -18,7 +22,7 @@ def role_required(role):
             verify_jwt_in_request()
             claims = get_jwt()
             if claims.get("role") != role:
-                return json_response({"msg": "Forbidden."}, 403)
+                return json_response({"msg": "Missing Authorization Header"}, 401)
             return function(*args, **kwargs)
 
         return wrapper
