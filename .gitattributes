@@ -1,0 +1,4 @@
+# Bash skripte moraju imati Unix (LF) prelome linija bez obzira na platformu
+# na kojoj se repozitorijum klonira - Windows git klijent bi ih inace mogao
+# konvertovati u CRLF, sto bash odbija sa "bad interpreter" greskom.
+*.sh text eol=lf

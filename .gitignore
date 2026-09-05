@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+*.log
+# Voting.json se NE ignorise: to je artefakt koji Docker Image preuzima gotov
+.solc-cache/
+.idea/
+.vscode/
+.DS_Store

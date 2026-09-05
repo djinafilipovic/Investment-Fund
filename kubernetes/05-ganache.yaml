@@ -1,0 +1,65 @@
+# ---------------------------------------------------------------------------
+# Simulator Ethereum Blockchain platforme.
+# Koristi se javno dostupan Docker Image artefakt:
+#   https://hub.docker.com/r/trufflesuite/ganache-cli/
+# ---------------------------------------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: ganache
+  labels:
+    app: ganache
+spec:
+  type: NodePort
+  selector:
+    app: ganache
+  ports:
+    - name: rpc
+      port: 8545
+      targetPort: 8545
+      nodePort: 30004
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ganache
+  labels:
+    app: ganache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ganache
+  template:
+    metadata:
+      labels:
+        app: ganache
+    spec:
+      containers:
+        - name: ganache
+          image: trufflesuite/ganache-cli:v6.12.2
+          args:
+            - "--host"
+            - "0.0.0.0"
+            - "--port"
+            - "8545"
+            - "--networkId"
+            - "5777"
+            - "--deterministic"
+            - "--accounts"
+            - "15"
+            - "--gasLimit"
+            - "8000000"
+          ports:
+            - containerPort: 8545
+          readinessProbe:
+            tcpSocket:
+              port: 8545
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              memory: "1Gi"

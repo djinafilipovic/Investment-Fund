@@ -1,0 +1,55 @@
+# ---------------------------------------------------------------------------
+# Sva konfiguracija sistema izdvojena je u ConfigMap objekat, a svi osetljivi
+# podaci (lozinke i tajni kljuc za potpisivanje tokena) u Secret objekat.
+# Kontejneri ove vrednosti dobijaju isključivo putem varijabli okruzenja.
+# ---------------------------------------------------------------------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: iep-config
+  labels:
+    app.kubernetes.io/part-of: investment-fund
+data:
+  # relaciona baza podataka (korisnicki nalozi)
+  DATABASE_HOST: "authentication-db"
+  DATABASE_PORT: "3306"
+  DATABASE_NAME: "iep_users"
+  DATABASE_USER: "iep"
+
+  # nerelaciona baza podataka (imovina fonda)
+  MONGO_URI: "mongodb://fund-db:27017/"
+  MONGO_DATABASE: "fund"
+  MONGO_COLLECTION: "assets"
+
+  # Redis servis (zahtevi koji cekaju odluku direktora)
+  REDIS_HOST: "order-cache"
+  REDIS_PORT: "6379"
+  REDIS_DB: "0"
+  REDIS_ORDERS_KEY: "pending_orders"
+  REDIS_CONTRACTS_KEY: "voting_contracts"
+
+  # Ethereum simulator
+  GANACHE_URL: "http://ganache:8545"
+  CONTRACT_GAS_LIMIT: "3000000"
+  VOTE_GAS_LIMIT: "200000"
+  DEPLOYER_ACCOUNT_INDEX: "0"
+  WATCHER_ENABLED: "true"
+  WATCHER_INTERVAL: "2"
+
+  # pocetni direktor fonda
+  DIRECTOR_FORENAME: "Scrooge"
+  DIRECTOR_SURNAME: "McDuck"
+  DIRECTOR_EMAIL: "onlymoney@gmail.com"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: iep-secret
+  labels:
+    app.kubernetes.io/part-of: investment-fund
+type: Opaque
+stringData:
+  DATABASE_PASSWORD: "iep_password"
+  DATABASE_ROOT_PASSWORD: "iep_root_password"
+  JWT_SECRET_KEY: "5f2b8c1a4d7e9f0b3c6a8d1e4f7b2c5a8d1e4f7b2c5a8d1e"
+  DIRECTOR_PASSWORD: "evenmoremoney"

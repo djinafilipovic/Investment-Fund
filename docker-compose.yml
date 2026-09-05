@@ -1,0 +1,106 @@
+# ---------------------------------------------------------------------------
+# Pomocna konfiguracija za lokalni razvoj i brzo testiranje.
+# Sistem koji se predaje / demonstrira pokrece se pomocu Kubernetes alata
+# (direktorijum kubernetes/).
+# ---------------------------------------------------------------------------
+services:
+  authentication-db:
+    image: mysql:8.0
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    environment:
+      MYSQL_DATABASE: iep_users
+      MYSQL_USER: iep
+      MYSQL_PASSWORD: iep_password
+      MYSQL_ROOT_PASSWORD: iep_root_password
+    volumes:
+      - authentication-db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      retries: 30
+
+  fund-db:
+    image: mongo:7.0
+    volumes:
+      - fund-db-data:/data/db
+
+  order-cache:
+    image: redis:7.2-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - order-cache-data:/data
+
+  ganache:
+    image: trufflesuite/ganache-cli:v6.12.2
+    command:
+      ["--host", "0.0.0.0", "--port", "8545", "--networkId", "5777",
+       "--deterministic", "--accounts", "15", "--gasLimit", "8000000"]
+    ports:
+      - "8545:8545"
+
+  authentication:
+    build: ./authentication
+    image: iep/authentication:latest
+    depends_on:
+      authentication-db:
+        condition: service_healthy
+    environment:
+      DATABASE_HOST: authentication-db
+      DATABASE_PORT: "3306"
+      DATABASE_NAME: iep_users
+      DATABASE_USER: iep
+      DATABASE_PASSWORD: iep_password
+      JWT_SECRET_KEY: 5f2b8c1a4d7e9f0b3c6a8d1e4f7b2c5a8d1e4f7b2c5a8d1e
+      DIRECTOR_FORENAME: Scrooge
+      DIRECTOR_SURNAME: McDuck
+      DIRECTOR_EMAIL: onlymoney@gmail.com
+      DIRECTOR_PASSWORD: evenmoremoney
+    command: >
+      sh -c "python migrate.py &&
+             gunicorn --bind 0.0.0.0:5000 --workers 2 --threads 4 --access-logfile - authentication:application"
+    ports:
+      - "5001:5000"
+
+  employee:
+    build: ./employee
+    image: iep/employee:latest
+    depends_on:
+      - fund-db
+      - order-cache
+    environment:
+      MONGO_URI: mongodb://fund-db:27017/
+      MONGO_DATABASE: fund
+      MONGO_COLLECTION: assets
+      REDIS_HOST: order-cache
+      REDIS_PORT: "6379"
+      REDIS_ORDERS_KEY: pending_orders
+      JWT_SECRET_KEY: 5f2b8c1a4d7e9f0b3c6a8d1e4f7b2c5a8d1e4f7b2c5a8d1e
+    # replikacija u tri instance je definisana u Kubernetes manifestu
+    # (kubernetes/07-employee.yaml), ne u docker-compose konfiguraciji
+    ports:
+      - "5002:5000"
+
+  director:
+    build: ./director
+    image: iep/director:latest
+    depends_on:
+      - fund-db
+      - order-cache
+      - ganache
+    environment:
+      MONGO_URI: mongodb://fund-db:27017/
+      MONGO_DATABASE: fund
+      MONGO_COLLECTION: assets
+      REDIS_HOST: order-cache
+      REDIS_PORT: "6379"
+      REDIS_ORDERS_KEY: pending_orders
+      REDIS_CONTRACTS_KEY: voting_contracts
+      GANACHE_URL: http://ganache:8545
+      JWT_SECRET_KEY: 5f2b8c1a4d7e9f0b3c6a8d1e4f7b2c5a8d1e4f7b2c5a8d1e
+    ports:
+      - "5003:5000"
+
+volumes:
+  authentication-db-data:
+  fund-db-data:
+  order-cache-data:
