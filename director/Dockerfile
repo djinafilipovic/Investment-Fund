@@ -27,6 +27,7 @@ RUN test -f contracts/Voting.json \
 
 EXPOSE 5000
 
-# jedan radnik, kako bi u procesu postojala samo jedna nadzorna nit za glasanje
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "1", "--threads", "8", \
-     "--access-logfile", "-", "director:application"]
+# Pokrece se kao jedan proces, kako bi postojala tacno jedna nadzorna nit
+# za glasanje (zato je i debug iskljucen u director.py - ukljucen debug bi
+# pokrenuo auto-reloader, a s njim i drugi proces sa svojom nitju).
+CMD ["python", "director.py"]

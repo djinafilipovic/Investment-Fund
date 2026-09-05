@@ -4,4 +4,3 @@ pymongo==4.8.0
 redis==5.0.8
 web3==6.20.3
 py-solc-x==2.0.3
-gunicorn==22.0.0
